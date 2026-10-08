@@ -3,7 +3,7 @@ import random
 import config
 from pyrogram import enums
 from pyrogram.types import InlineKeyboardButton
-from ShrutixMusic import app
+from ShrutixMusic import nand as app
 from ShrutixMusic.utils.formatters import time_to_seconds
 
 STYLES = [

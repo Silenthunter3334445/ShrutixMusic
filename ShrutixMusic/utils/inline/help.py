@@ -18,33 +18,40 @@ def _chunk(items, size):
 def _mark_button(_, START, style):
     if START:
         return InlineKeyboardButton(
-            text=_["BACK_BUTTON"], callback_data="settingsback_helper", style=style
+            text=_.get("BACK_BUTTON", "⬅️ Back"),
+            callback_data="settingsback_helper",
+            style=style,
         )
     return InlineKeyboardButton(
-        text=_["CLOSE_BUTTON"], callback_data="close", style=style
+        text=_.get("CLOSE_BUTTON", "✖️ Close"),
+        callback_data="close",
+        style=style,
     )
 
 
 def help_pannel(_, START: Union[bool, int] = None, page: int = 1):
     sf = "1" if START else "0"
     items = PAGE_ONE if page == 1 else PAGE_TWO
+
     rows = _chunk(
         [
             InlineKeyboardButton(
-                text=_[f"H_B_{key[2:]}"],
+                text=_.get(f"H_B_{key[2:]}", key.upper()),
                 callback_data=f"help_callback {key} {sf}",
             )
             for key in items
         ],
         3,
     )
+
     style = random.choice(NAV_STYLES)
     mark = _mark_button(_, START, style)
+
     if page == 1:
         nav = [
             mark,
             InlineKeyboardButton(
-                text=_["NEXT_BUTTON"],
+                text=_.get("NEXT_BUTTON", "Next ➡️"),
                 callback_data=f"help_page 2 {sf}",
                 style=style,
             ),
@@ -52,23 +59,26 @@ def help_pannel(_, START: Union[bool, int] = None, page: int = 1):
     else:
         nav = [
             InlineKeyboardButton(
-                text=_["PREV_BUTTON"],
+                text=_.get("PREV_BUTTON", "⬅️ Previous"),
                 callback_data=f"help_page 1 {sf}",
                 style=style,
             ),
             mark,
         ]
+
     rows.append(nav)
     return InlineKeyboardMarkup(rows)
 
 
 def help_back_markup(_, page: int = 1, START: Union[bool, int] = None):
     sf = "1" if START else "0"
+
     return InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
-                    text=_["BACK_BUTTON"], callback_data=f"help_page {page} {sf}"
+                    text=_.get("BACK_BUTTON", "⬅️ Back"),
+                    callback_data=f"help_page {page} {sf}",
                 )
             ]
         ]
@@ -79,7 +89,7 @@ def private_help_panel(_):
     buttons = [
         [
             InlineKeyboardButton(
-                text=_["S_B_4"],
+                text=_.get("S_B_4", "Help"),
                 url=f"https://t.me/{nand.username}?start=help",
             ),
         ],
